@@ -8,5 +8,5 @@ public class Program {
 		/*Main program where we will read in data from input file
 		  and print output to console */
 
-	}
-}
+	}//end main
+}//end Program
