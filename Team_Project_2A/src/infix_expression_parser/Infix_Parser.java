@@ -4,6 +4,41 @@ import java.util.Scanner;
 
 public class Infix_Parser {
 	
+	/**
+	 * Convert the infix to the correct infix for evaluting the expression
+	 * @param infix: infix expression with no space
+	 * @return: infix expression with corrected space
+	 */
+	public static String fixInfix(String infix) {
+		String result = "", num = "", oper = "";
+		//StringBuilder result = new StringBuilder();
+		for(int i = 0; i <infix.length();i++) {
+			if(Character.isDigit(infix.charAt(i))) {
+				if(oper.length() > 0) {
+					result += oper + " ";
+				}
+				num += infix.charAt(i);
+				oper = "";
+			}else {
+				if(num.length() > 0) {
+					result += num + " ";
+				}
+				if(infix.charAt(i) == '(' || infix.charAt(i) == ')' || 
+						infix.charAt(i) == '[' || infix.charAt(i) == ']' || 
+								infix.charAt(i) == '{' || infix.charAt(i) == '}'){
+					oper += infix.charAt(i);
+					result += oper+" ";
+					oper = "";
+					num = "";
+				}else {
+					oper += infix.charAt(i);
+					num = "";
+				}
+			}
+		}
+		return result.toString();
+	}
+	
 	/** Tests whether parentheses are balanced in an expression.
 		@param exp: expression to test
 	    @return: {true} if parentheses are balanced in the expression; {false} otherwise
