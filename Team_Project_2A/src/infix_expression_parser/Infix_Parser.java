@@ -58,8 +58,13 @@ public class Infix_Parser {
 	    @throws IllegalArgumentException: operator is not supported.
 	*/
 	private static int precedence(String oper) {
-	    if (oper.equals("*") || oper.equals("/")) { return 12; }
-	    if (oper.equals("+") || oper.equals("-")) { return 11; }
+	    if (oper.equals("||")){ return 1; }
+	    if (oper.equals("&&")){ return 2; }
+	    if (oper.equals("==") || (oper.equals("!="))){ return 3; }
+	    if (oper.equals(">") || (oper.equals(">=")) || (oper.equals("<")) || (oper.equals("<="))){ return 4; }
+	    if (oper.equals("+") || (oper.equals("-"))){ return 5; }
+	    if (oper.equals("*") || (oper.equals("/")) || (oper.equals("%"))){ return 6; }
+	    if (oper.equals("^")){ return 7; }
 	    throw new IllegalArgumentException("Operator not supported");
 	}
 	
