@@ -3,48 +3,71 @@ package infix_expression_parser;
 import java.util.Scanner;
 
 public class Infix_Parser {
+	private String infix;
+	private String postfix;
+
+	public Infix_Parser() {}
+	public Infix_Parser(String input) {
+		infix = fixInfix(input);
+		if(isBalanced(input)) {
+			postfix = infixToPostfix(infix);
+		}
+	}
 	
 	/**
 	 * Convert the infix to the correct infix for evaluting the expression
 	 * @param infix: infix expression with no space
 	 * @return: infix expression with corrected space
 	 */
-	public static String fixInfix(String infix) {
+	public String fixInfix(String input) {
 		String result = "", num = "", oper = "";
 		//StringBuilder result = new StringBuilder();
-		for(int i = 0; i <infix.length();i++) {
-			if(Character.isDigit(infix.charAt(i))) {
+		for(int i = 0; i <input.length();i++) {
+			if(Character.isDigit(input.charAt(i))) {
 				if(oper.length() > 0) {
-					result += oper + " ";
+					result +=  oper + " " ;
+					//System.out.println(result);
 				}
-				num += infix.charAt(i);
+				num += input.charAt(i);
 				oper = "";
 			}else {
 				if(num.length() > 0) {
-					result += num + " ";
+					
+					result += num+" " ;
+					//System.out.println(result);
 				}
-				if(infix.charAt(i) == '(' || infix.charAt(i) == ')' || 
-						infix.charAt(i) == '[' || infix.charAt(i) == ']' || 
-								infix.charAt(i) == '{' || infix.charAt(i) == '}'){
-					oper += infix.charAt(i);
+				if(input.charAt(i) == '(' || input.charAt(i) == ')' || 
+						input.charAt(i) == '[' || input.charAt(i) == ']' || 
+								input.charAt(i) == '{' || input.charAt(i) == '}'){
+					if(oper.length() > 0) {
+						oper += " "+input.charAt(i);
+					}else {
+						oper += input.charAt(i);
+					}
+					
+					//System.out.println("- "+ oper +" -");
 					result += oper+" ";
 					oper = "";
 					num = "";
+					//System.out.println(result);
 				}else {
-					oper += infix.charAt(i);
+					oper += input.charAt(i);
 					num = "";
 				}
 			}
 		}
-		return result.toString();
+		
+		result += num + oper;
+		//System.out.println(result);
+		return result;
 	}
 	
 	/** Tests whether parentheses are balanced in an expression.
 		@param exp: expression to test
 	    @return: {true} if parentheses are balanced in the expression; {false} otherwise
 	*/
-	public static boolean isBalanced(String exp) {
-	    Linked_List_Stack<Character> stk = new Linked_List_Stack<>();
+	private boolean isBalanced(String exp) {
+	    Stack<Character> stk = new Stack<>();
 	    for (int i = 0; i < exp.length(); i++) {
 	        if (exp.charAt(i) == '(' || exp.charAt(i) == '[' || exp.charAt(i) == '{') { stk.push(exp.charAt(i)); }
 	        if (exp.charAt(i) == ')' || exp.charAt(i) == ']' || exp.charAt(i) == '}') {
@@ -58,12 +81,13 @@ public class Infix_Parser {
 	    return stk.isEmpty();
 	}
 	
-	/** Evaluates a postfix expression using a stack.
+	/** Evaluates a postfix expression using a stack. 
+	 * "^", "*", "/", "%", "+", "-", ">", ">=", "<", "<=", "==", "!=", "&&", "||" 14 totals
 	    @param postfixExp: postfix expression to evaluate
 	    @return: evaluation result
 	*/
-	public static int evaluate(String postfixExp) {
-	    Linked_List_Stack<Integer> stk = new Linked_List_Stack<>();
+	public int evaluate(String postfixExp) {
+		Stack<Integer> stk = new Stack<>();
 	    Scanner scanner = new Scanner(postfixExp);
 	    while (scanner.hasNext()) {
 	        String token = scanner.next();
@@ -71,9 +95,19 @@ public class Infix_Parser {
 	        else {
 	            int rightOperand = stk.pop(), leftOperand = stk.pop();
 	            // Supported operators
-	            if (token.equals("+")) { stk.push(leftOperand + rightOperand); }
-	            if (token.equals("-")) { stk.push(leftOperand - rightOperand); }
-	            if (token.equals("*")) { stk.push(leftOperand * rightOperand); }
+	            if (token.equals("+")) { stk.push(leftOperand + rightOperand); } // "+"
+	            if (token.equals("-")) { stk.push(leftOperand - rightOperand); } // "-"
+	            if (token.equals("*")) { stk.push(leftOperand * rightOperand); } // "*"
+	            if (token.equals("^")) { stk.push((int) Math.pow(leftOperand, rightOperand));} // "^"
+	            if (token.equals("%")) { stk.push(leftOperand % rightOperand);} // "%"
+	            if (token.equals(">")) { stk.push((leftOperand > rightOperand) ? 1: 0);} // ">"
+	            if (token.equals(">=")) { stk.push((leftOperand >= rightOperand) ? 1: 0);} // ">="
+	            if (token.equals("<")) { stk.push((leftOperand < rightOperand) ? 1: 0);} // "<"
+	            if (token.equals("<=")) { stk.push((leftOperand <= rightOperand) ? 1: 0);} // "<="
+	            if (token.equals("==")) { stk.push((leftOperand == rightOperand) ? 1: 0);} // "=="
+	            if (token.equals("!=")) { stk.push((leftOperand != rightOperand) ? 1: 0);} // "!="
+	            if (token.equals("&&")) { stk.push(((leftOperand == 1 && rightOperand == 1) ? 1: 0));} // "&&"
+	            if (token.equals("||")) { stk.push(((leftOperand == 1 || rightOperand == 1) ? 1: 0));} // "||"
 	            if (token.equals("/")) {
 	                if (rightOperand == 0) {
 	                    scanner.close();
@@ -92,7 +126,7 @@ public class Infix_Parser {
 	    @return: precedence of the operator
 	    @throws IllegalArgumentException: operator is not supported.
 	*/
-	private static int precedence(String oper) {
+	private int precedence(String oper) {
 	    if (oper.equals("||")){ return 1; }
 	    if (oper.equals("&&")){ return 2; }
 	    if (oper.equals("==") || (oper.equals("!="))){ return 3; }
@@ -107,8 +141,8 @@ public class Infix_Parser {
 	    @param infixExp: infix expression to convert
 	    @return: result postfix expression
 	*/
-	public static String infixToPostfix(String infixExp) {
-	    Linked_List_Stack<String> stk = new Linked_List_Stack<>();
+	public String infixToPostfix(String infixExp) {
+		Stack<String> stk = new Stack<>();
 	    StringBuilder postfix = new StringBuilder();
 	    Scanner scanner = new Scanner(infixExp);
 	    while (scanner.hasNext()) {
