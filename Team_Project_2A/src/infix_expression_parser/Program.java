@@ -12,12 +12,12 @@ public class Program {
 		FileInputStream inputfile = new FileInputStream("input.txt");
 		Scanner scanner = new Scanner(inputfile);
 		Infix_Parser parser = new Infix_Parser();
-		
+		String exp = "";
 		while(scanner.hasNext()) {
-			String exp = scanner.nextLine().replaceAll(" ", "");
-			parser.evaluate(exp);
-			
+			exp += scanner.next(); // this will skip space and \t
+			//String exp = scanner.nextLine().replaceAll(" ", "");
 		}
+		parser.evaluate(exp);
 		
 		inputfile.close();
 		scanner.close();
