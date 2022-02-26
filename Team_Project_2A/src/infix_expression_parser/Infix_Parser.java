@@ -163,4 +163,11 @@ public class Infix_Parser {
 	    scanner.close();
 	    return postfix.toString();
 	}
+	
+	
+	@Override
+	public String toString() {
+		String result = infix + " = "+evaluate(postfix);
+		return result;
+	}
 }
