@@ -14,11 +14,10 @@ public class Program {
 		Infix_Parser parser = new Infix_Parser();
 		String exp = "";
 		while(scanner.hasNext()) {
-			exp += scanner.next(); // this will skip space and \t
-			//String exp = scanner.nextLine().replaceAll(" ", "");
+			exp += scanner.nextLine().replace(" ", "").replace("\t", ""); // this will skip space and \t
+			parser = new Infix_parser(exp);
+			System.out.println(parser.toString());
 		}
-		parser.evaluate(exp);
-		
 		inputfile.close();
 		scanner.close();
 	}//end main
