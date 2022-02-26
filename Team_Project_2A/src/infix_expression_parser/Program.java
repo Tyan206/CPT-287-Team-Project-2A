@@ -15,8 +15,9 @@ public class Program {
 		String exp = "";
 		while(scanner.hasNext()) {
 			exp += scanner.nextLine().replace(" ", "").replace("\t", ""); // this will skip space and \t
-			parser = new Infix_parser(exp);
+			parser = new Infix_Parser(exp);
 			System.out.println(parser.toString());
+			exp = "";
 		}
 		inputfile.close();
 		scanner.close();
