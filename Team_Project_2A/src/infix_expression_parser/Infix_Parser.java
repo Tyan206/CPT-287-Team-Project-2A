@@ -67,7 +67,7 @@ public class Infix_Parser {
 	    @return: {true} if parentheses are balanced in the expression; {false} otherwise
 	*/
 	private boolean isBalanced(String exp) {
-	    Stack<Character> stk = new Stack<>();
+	    Linked_List_Stack<Character> stk = new Linked_List_Stack<>();
 	    for (int i = 0; i < exp.length(); i++) {
 	        if (exp.charAt(i) == '(' || exp.charAt(i) == '[' || exp.charAt(i) == '{') { stk.push(exp.charAt(i)); }
 	        if (exp.charAt(i) == ')' || exp.charAt(i) == ']' || exp.charAt(i) == '}') {
@@ -87,7 +87,7 @@ public class Infix_Parser {
 	    @return: evaluation result
 	*/
 	public int evaluate(String postfixExp) {
-		Stack<Integer> stk = new Stack<>();
+		Linked_List_Stack<Integer> stk = new Linked_List_Stack<>();
 	    Scanner scanner = new Scanner(postfixExp);
 	    while (scanner.hasNext()) {
 	        String token = scanner.next();
@@ -142,7 +142,7 @@ public class Infix_Parser {
 	    @return: result postfix expression
 	*/
 	public String infixToPostfix(String infixExp) {
-		Stack<String> stk = new Stack<>();
+		Linked_List_Stack<String> stk = new Linked_List_Stack<>();
 	    StringBuilder postfix = new StringBuilder();
 	    Scanner scanner = new Scanner(infixExp);
 	    while (scanner.hasNext()) {
