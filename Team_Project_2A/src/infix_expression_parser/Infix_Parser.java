@@ -21,12 +21,12 @@ public class Infix_Parser {
 	 */
 	public String fixInfix(String input) {
 		String result = "", num = "", oper = "";
-		//StringBuilder result = new StringBuilder();
+		
 		for(int i = 0; i <input.length();i++) {
 			if(Character.isDigit(input.charAt(i))) {
 				if(oper.length() > 0) {
 					result +=  oper + " " ;
-					//System.out.println(result);
+					
 				}
 				num += input.charAt(i);
 				oper = "";
@@ -34,7 +34,7 @@ public class Infix_Parser {
 				if(num.length() > 0) {
 					
 					result += num+" " ;
-					//System.out.println(result);
+					
 				}
 				if(input.charAt(i) == '(' || input.charAt(i) == ')' || 
 						input.charAt(i) == '[' || input.charAt(i) == ']' || 
@@ -45,11 +45,9 @@ public class Infix_Parser {
 						oper += input.charAt(i);
 					}
 					
-					//System.out.println("- "+ oper +" -");
 					result += oper+" ";
 					oper = "";
 					num = "";
-					//System.out.println(result);
 				}else {
 					oper += input.charAt(i);
 					num = "";
@@ -58,7 +56,6 @@ public class Infix_Parser {
 		}
 		
 		result += num + oper;
-		//System.out.println(result);
 		return result;
 	}
 	
